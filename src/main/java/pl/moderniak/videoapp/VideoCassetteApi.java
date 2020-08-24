@@ -1,9 +1,6 @@
 package pl.moderniak.videoapp;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/cassetts/")
+@RequestMapping("/api/cassetts")
 public class VideoCassetteApi {
 
     private List<VideoCassette> videoCassettes;
@@ -34,5 +31,20 @@ public class VideoCassetteApi {
                 .filter(e -> e.getId() == index)
                 .findFirst();
         return first.get();
+    }
+
+    @PostMapping
+    public boolean addVideo(@RequestBody VideoCassette videoCassette) {
+        return videoCassettes.add(videoCassette);
+    }
+
+    @PutMapping
+    public boolean updateVideo(@RequestBody VideoCassette videoCassette) {
+        return videoCassettes.add(videoCassette);
+    }
+
+    @DeleteMapping
+    public boolean deleteVideo(@RequestParam int index) {
+        return videoCassettes.removeIf(e -> e.getId() == index);
     }
 }
