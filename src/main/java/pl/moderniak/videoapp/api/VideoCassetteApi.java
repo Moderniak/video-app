@@ -1,7 +1,11 @@
 package pl.moderniak.videoapp.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.*;
 import pl.moderniak.videoapp.dao.entity.VideoCassette;
+import pl.moderniak.videoapp.manager.VideoCassetteManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,40 +16,38 @@ import java.util.Optional;
 @RequestMapping("/api/cassetts")
 public class VideoCassetteApi {
 
-    private List<VideoCassette> videoCassettes;
+    private VideoCassetteManager videoCassettes;
 
-    public VideoCassetteApi() {
-        videoCassettes = new ArrayList<>();
-        videoCassettes.add(new VideoCassette(1L, "Star Wars VI - Return of Jedi", LocalDate.of(1983, 5, 25)));
-        videoCassettes.add(new VideoCassette(2L, "Seven Pounds", LocalDate.of(2009, 3, 13)));
-        videoCassettes.add(new VideoCassette(3L, "Pulp Fiction", LocalDate.of(1111, 1, 1)));
+    @Autowired
+    public VideoCassetteApi(VideoCassetteManager videoCassetteManager) {
+        this.videoCassettes = videoCassetteManager;
     }
 
     @GetMapping("/all")
-    public List<VideoCassette> getAll() {
-        return videoCassettes;
+    public Iterable<VideoCassette> getAll() {
+        return  videoCassettes.findAll();
     }
 
     @GetMapping
-    public VideoCassette getById(@RequestParam int index) {
-        Optional<VideoCassette> first = videoCassettes.stream()
-                .filter(e -> e.getId() == index)
-                .findFirst();
-        return first.get();
+    public Optional<VideoCassette> getById(@RequestParam Long index) {
+
+        return videoCassettes.findById(index);
     }
 
     @PostMapping
-    public boolean addVideo(@RequestBody VideoCassette videoCassette) {
-        return videoCassettes.add(videoCassette);
+    public VideoCassette addVideo(@RequestBody VideoCassette videoCassette) {
+        return videoCassettes.save(videoCassette);
     }
 
     @PutMapping
-    public boolean updateVideo(@RequestBody VideoCassette videoCassette) {
-        return videoCassettes.add(videoCassette);
+    public VideoCassette updateVideo(@RequestBody VideoCassette videoCassette) {
+        return videoCassettes.save(videoCassette);
     }
 
     @DeleteMapping
-    public boolean deleteVideo(@RequestParam int index) {
-        return videoCassettes.removeIf(e -> e.getId() == index);
+    public void deleteVideo(@RequestParam Long index) {
+        videoCassettes.deleteById(index);
     }
+
+
 }
