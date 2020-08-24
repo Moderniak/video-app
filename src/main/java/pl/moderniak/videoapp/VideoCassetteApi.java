@@ -20,6 +20,7 @@ public class VideoCassetteApi {
         videoCassettes = new ArrayList<>();
         videoCassettes.add(new VideoCassette(1L, "Star Wars VI - Return of Jedi", LocalDate.of(1983, 5, 25)));
         videoCassettes.add(new VideoCassette(2L, "Seven Pounds", LocalDate.of(2009, 3, 13)));
+        videoCassettes.add(new VideoCassette(3L, "Pulp Fiction", LocalDate.of(1111, 1, 1)));
     }
 
     @GetMapping("/all")
