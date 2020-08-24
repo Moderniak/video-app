@@ -1,6 +1,7 @@
-package pl.moderniak.videoapp;
+package pl.moderniak.videoapp.api;
 
 import org.springframework.web.bind.annotation.*;
+import pl.moderniak.videoapp.dao.entity.VideoCassette;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
